@@ -128,21 +128,6 @@ function db_fetchall_order3($foo,$table,$bar,$value,$bar2,$value2,$bar3,$value3,
 	$i=0;
 }
 
-function db_connect() {
-	$con = mysql_connect("wendysclaycom.ipagemysql.com","jono_clark","George123!!!");
-	$sqlconnect = mysql_select_db("floppybird",$con);
-}
-
-function db_connect2() {
-	$con=mysqli_connect("wendysclaycom.ipagemysql.com","jono_clark","George123!!!","floppybird");
-	return $con;
-}
-
-function db_connect_sqli_obj() {
-	$con=new mysqli("wendysclaycom.ipagemysql.com","jono_clark","George123!!!","floppybird");
-	return $con;
-}
-
 function deletefromdatabase($table,$foo,$value){
 	mysql_query("DELETE FROM " . $table ." WHERE ". $foo . " = '" . $value . "'");
 }
