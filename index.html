@@ -1,79 +1,176 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<!--
-   Copyright 2014 Nebez Briefkani
-   floppybird - index.html
+    <head>
+        <meta charset="utf-8">
+        <title>Floppy Bird</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" media="all"/>
+        <link href="css/all.css" rel="stylesheet" type="text/css" media="all"/>
+        <link rel="shortcut icon" href="favicon.ico">
+    </head>
+<body>
+<div id="wrapper">
+<header id="header">
+<div class="panel">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-4 col-md-8"></div>
+			<div class="col-lg-8 col-md-4 col-sm-12">
+				<nav class="top-nav pull-right">
+					<ul>
+						<li><a href="#" onClick="alert('He didn\'t see you')" class="wave">Wave at Jon</a></li>
+						<li><a href="mailto:jclark@enhanced.co.uk" class="logout">Email Jon</a></li>
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="bar">
+		<div class="row">
+			<div class="col-lg-4 col-md-4 col-sm-12">
+				<img src="images/logo.png" alt="flappy bird logo" width="300" height="100" style="margin: 20px; margin-left:30px;" />
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12">
+				<img src="images/bird.png" id="bird" width="40" height="40" alt="bird" style="margin-left:185px; margin-top:50px;" />
+			</div>
+			<div class="col-lg-4 col-md-4 col-sm-12">
+				<form action="game.php" method="post" class="basket-form">
+					<div style="margin-top:50px;"></div>
+					<h1 style="display:inline;">Enter Code:</h1>
+					<input type="text" size="10" name="code" />
+					<input type="submit" name="playgame" value="Play" style="margin-top:2px;" />
+				</form>
+			</div>
+		</div>
+</div>
+</header>
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+<div class="col-lg-6 col-md-6 col-sm-12" style="padding:0px;">
+	<div class="white-bg">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>Place</th>
+					<th>Name</th>
+					<th>Score</th>
+					<th>Prize</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td>1</td>
+					<td>Jon</td>
+					<td>1080</td>
+					<td>&pound;10</td>
+				</tr>
+				<tr>
+					<td>2</td>
+					<td>Ed</td>
+					<td>980</td>
+					<td>&pound;3</td>
+				</tr>
+				<tr>
+					<td>3</td>
+					<td>Chris</td>
+					<td>800</td>
+					<td>&pound;2</td>
+				</tr>
+				<tr>
+					<td>4</td>
+					<td>Adam</td>
+					<td>550</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>5</td>
+					<td>Beorge</td>
+					<td>10</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>6</td>
+					<td>Alex</td>
+					<td>10</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>7</td>
+					<td>Christie</td>
+					<td>10</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>8</td>
+					<td>Jenny</td>
+					<td>10</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>9</td>
+					<td>Rooney</td>
+					<td>10</td>
+					<td></td>
+				</tr>
+				<tr>
+					<td>10</td>
+					<td>Cantona</td>
+					<td>10</td>
+					<td></td>
+				</tr>
+			</tbody>
+				
+		</table>
+	</div>
+</div>
 
-       http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
--->
+<div class="col-lg-6 col-md-6 col-sm-12" style="padding:0px;">
+	<div class="green-bg">
+		<h1>Infrequently Asked Questions (IAQ)</h1>
+		<br>
+		<p class="question">Q. Were any animals harmed in the making of floppy bird?</p>
+		<p class="answer">A. No, and please refrain from directing your frustration on any home pets</p>
+		<p class="question">Q. Isn't it called <u>flappy</u> bird?</p>
+		<p class="answer">A. No</p>
+		<p class="question">Q. How do I play?</p>
+		<p class="answer">A. 1) Give Jon 50p 2) Enter the code Jon gives you above</p>
+		<p class="question">Q. But how do I <i>play</i></p>
+		<p class="answer">A. Click the mouse repeatedly to flop floppy bird to safety/inevitable doom</p>
+		<p class="question">Q. Can I <i>actually</i> win money?
+		<p class="answer">A. Yes, you can <i>actually</i> win money, your place and prize is listed on the left, good luck :-)</p>
+		<p class="question">Q. Can I have a discount please?</p>
+		<p class="answer">A. Buy 4 plays, get one free!  Very special price.</p>
+	</div>
+</div>
+<br>
 
-   <head>
-      <title>Floppy Bird</title>
-      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-      <meta name="author" content="Nebez Briefkani" />
-      <meta name="description" content="play floppy bird. a remake of popular game flappy bird using just html/css/js" />
-      <meta name="keywords" content="flappybird,flappy,bird,floppybird,floppy,html,html5,css,css3,js,javascript,jquery,github,nebez,briefkani,nebezb,open,source,opensource" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
 
-      <!-- Open Graph tags -->
-      <meta property="og:title" content="Floppy Bird" />
-      <meta property="og:description" content="play floppy bird. a remake of popular game flappy bird using just html/css/js" />
-      <meta property="og:type" content="website" />
-      <meta property="og:image" content="http://nebez.github.io/floppybird/assets/thumb.png" />
-      <meta property="og:url" content="http://nebez.github.io/floppybird/" />
-      <meta property="og:site_name" content="Floppy Bird" />
-      
-      <!-- Style sheets -->
-      <link href="css/reset.css" rel="stylesheet">
-      <link href="css/main.css" rel="stylesheet">
-   </head>
-   <body>
-      <div id="gamecontainer">
-         <div id="gamescreen">
-            <div id="sky" class="animated">
-               <div id="flyarea">
-                  <div id="ceiling" class="animated"></div>
-                  <!-- This is the flying and pipe area container -->
-                  <div id="player" class="bird animated"></div>
-                  
-                  <div id="bigscore"></div>
-                  
-                  <div id="splash"></div>
-                  
-                  <div id="scoreboard">
-                     <div id="medal"></div>
-                     <div id="currentscore"></div>
-                     <div id="highscore"></div>
-                     <div id="replay"><img src="assets/replay.png" alt="replay"></div>
-                  </div>
-                  
-                  <!-- Pipes go here! -->
-               </div>
-            </div>
-            <div id="land" class="animated"><div id="debug"></div></div>
-         </div>
-      </div>
-      <div id="footer">
-         <a href="http://www.dotgears.com/">original game/concept/art by dong nguyen</a>
-         <a href="http://nebezb.com/">recreated by nebez briefkani</a>
-         <a href="http://github.com/nebez/floppybird/">view github project</a>
-      </div>
-      <div class="boundingbox" id="playerbox"></div>
-      <div class="boundingbox" id="pipebox"></div>
-      
-      <script src="js/jquery.min.js"></script>
-      <script src="js/jquery.transit.min.js"></script>
-      <script src="js/buzz.min.js"></script>
-      <script src="js/main.js"></script>
-   </body>
+</div>
+</body>
 </html>
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script type="text/javascript">
+var upOrDown = "down";
+$(function() {
+	//setInterval(flap, 50);
+});
+
+function flap() {
+	var birdHeight =  document.getElementById('bird').style.marginTop;
+	birdHeight = birdHeight.replace('px','');
+
+	if(birdHeight < 90 && upOrDown == "down") {
+		birdHeight = parseInt(birdHeight) + 3;	
+	} else {
+		upOrDown = "up";		
+	}
+	if(birdHeight > 20 && upOrDown == "up") {
+		birdHeight = parseInt(birdHeight) - 3;
+	} else {
+		upOrDown = "down";
+	}
+	document.getElementById('bird').style.marginTop = birdHeight+"px";
+}
+</script>
