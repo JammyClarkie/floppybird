@@ -1,8 +1,17 @@
-1) CREATE TABLE  `users` (
+CREATE TABLE  `users` (
  `id` INT( 5 ) NOT NULL AUTO_INCREMENT ,
  `email` VARCHAR( 30 ) NOT NULL ,
  `firstname` VARCHAR( 30 ) NOT NULL ,
  `surname` VARCHAR( 30 ) NOT NULL ,
  `code` VARCHAR( 10 ) NOT NULL ,
 INDEX (  `id` )
-)
+);
+
+ALTER TABLE  `users` ADD  `turns` INT( 2 ) NOT NULL DEFAULT  '0';
+
+CREATE TABLE  `attempts` (
+ `id` INT( 7 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+ `userid` INT( 5 ) NOT NULL ,
+ `score` INT( 6 ) NOT NULL ,
+ `adate` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE = MYISAM ;

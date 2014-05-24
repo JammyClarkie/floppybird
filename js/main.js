@@ -6,7 +6,7 @@
    you may not use this file except in compliance with the License.
    You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+       http://www.apache.org/licenses/LICENSE-2.0 
 
    Unless required by applicable law or agreed to in writing, software
    distributed under the License is distributed on an "AS IS" BASIS,
@@ -33,6 +33,7 @@ var jump = -4.6;
 
 var score = 0;
 var highscore = 0;
+var turns; //JC Added for turns ajax retrieves from DB
 
 var pipeheight = 90;
 var pipewidth = 52;
@@ -53,7 +54,57 @@ buzz.all().setVolume(volume);
 var loopGameloop;
 var loopPipeloop;
 
+var QueryString = function () {
+  // This function is anonymous, is executed immediately and 
+  // the return value is assigned to QueryString!
+  var query_string = {};
+  var query = window.location.search.substring(1);
+  var vars = query.split("&");
+  for (var i=0;i<vars.length;i++) {
+    var pair = vars[i].split("=");
+    	// If first entry with this name
+    if (typeof query_string[pair[0]] === "undefined") {
+      query_string[pair[0]] = pair[1];
+    	// If second entry with this name
+    } else if (typeof query_string[pair[0]] === "string") {
+      var arr = [ query_string[pair[0]], pair[1] ];
+      query_string[pair[0]] = arr;
+    	// If third or later entry with this name
+    } else {
+      query_string[pair[0]].push(pair[1]);
+    }
+  } 
+    return query_string;
+} ();
+
 $(document).ready(function() {
+	//JC added querystring function that retrieves get parameters.  puts them into QueryString as objects eg. QueryString.code
+
+	//get number of turns the user has available
+    $.ajax({
+        type: "POST",
+        url: "getturns.php",
+        data: "code=" + QueryString.code,
+        dataType: "text",
+        success: function(data){
+            turns = parseInt(data);
+            if(isNaN(turns)) { turns = 0; }
+        }
+    });
+    //get users highest score
+    $.ajax({
+        type: "POST",
+        url: "gethighscore.php",
+        data: "code=" + QueryString.code,
+        dataType: "text",
+        success: function(data){
+            highscore = parseInt(data);
+            if(isNaN(highscore)) { highscore = 0; }
+        }
+    });
+	
+	
+  
    if(window.location.search == "?debug")
       debugmode = true;
    if(window.location.search == "?easy")
@@ -121,27 +172,31 @@ function startGame()
 {
    currentstate = states.GameScreen;
    
-   //fade out the splash
-   $("#splash").stop();
-   $("#splash").transition({ opacity: 0 }, 500, 'ease');
-   
-   //update the big score
-   setBigScore();
-   
-   //debug mode?
-   if(debugmode)
-   {
-      //show the bounding boxes
-      $(".boundingbox").show();
-   }
-
-   //start up our loops
-   var updaterate = 1000.0 / 60.0 ; //60 times a second
-   loopGameloop = setInterval(gameloop, updaterate);
-   loopPipeloop = setInterval(updatePipes, 1400);
-   
-   //jump from the start!
+   if(turns > 0) {
+	   //fade out the splash
+	   $("#splash").stop();
+	   $("#splash").transition({ opacity: 0 }, 500, 'ease');
+	   
+	   //update the big score
+	   setBigScore();
+	   
+	   //debug mode?
+	   if(debugmode)
+	   {
+	      //show the bounding boxes
+	      $(".boundingbox").show();
+	   }
+	
+	   //start up our loops
+	   var updaterate = 1000.0 / 60.0 ; //60 times a second
+	   loopGameloop = setInterval(gameloop, updaterate);
+	   loopPipeloop = setInterval(updatePipes, 1400);
+	   
+	   //jump from the start!
    playerJump();
+   } else {
+	   alert('You have no more turns on this code, please buy more :).  Refresh your browser if you already have.');
+   }
 }
 
 function updatePlayer(player)
@@ -320,6 +375,31 @@ function setHighScore()
       elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
 }
 
+function setTurns()
+{
+//TODO How to alter the element??
+   var elemscore = $("#turns");
+   elemscore.empty();
+   
+	$.ajax({
+        type: "POST",
+        async: false,
+        url: "reduceturns.php",
+        data: "code=" + QueryString.code,
+        dataType: "text",
+        success: function(data){
+            turns = parseInt(data);
+            if(isNaN(turns)) { turns = 0; }
+            var digits = turns.toString().split('');
+    for(var i = 0; i < digits.length; i++)
+      elemscore.append("<img src='assets/font_small_" + digits[i] + ".png' alt='" + digits[i] + "'>");
+           	return "finished";
+        }
+    });
+
+
+}
+
 function setMedal()
 {
    var elemmedal = $("#medal");
@@ -397,6 +477,8 @@ function showScore()
       highscore = score;
       //save it!
       setCookie("highscore", highscore, 999);
+      
+      //TODO: here for calling the ajax save to DB - save score and reduce no. of turns.
    }
    
    //update the scoreboard
@@ -408,25 +490,40 @@ function showScore()
    soundSwoosh.stop();
    soundSwoosh.play();
    
+   	$.ajax({
+        type: "POST",
+        url: "postattempt.php",
+        data: "code=" + QueryString.code + "&score=" + score,
+        dataType: "text",
+        error: function (request, status, error) {
+        	alert("Attempt failed to post to database for some reason.  Print screen proof of highscore and send to Jon if it was a good one.");
+		}
+    });
+   
    //show the scoreboard
    $("#scoreboard").css({ y: '40px', opacity: 0 }); //move it down so we can slide it up
    $("#replay").css({ y: '40px', opacity: 0 });
-   $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
-      //When the animation is done, animate in the replay button and SWOOSH!
-      soundSwoosh.stop();
-      soundSwoosh.play();
-      $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
-      
-      //also animate in the MEDAL! WOO!
-      if(wonmedal)
-      {
-         $("#medal").css({ scale: 2, opacity: 0 });
-         $("#medal").transition({ opacity: 1, scale: 1 }, 1200, 'ease');
-      }
-   });
    
-   //make the replay button clickable
-   replayclickable = true;
+   setTurns(); //JC added for turns
+   console.log(turns);
+     $("#scoreboard").transition({ y: '0px', opacity: 1}, 600, 'ease', function() {
+      	//When the animation is done, animate in the replay button and SWOOSH!
+      	soundSwoosh.stop();
+      	soundSwoosh.play();
+      	//also animate in the MEDAL! WOO!
+      	if(wonmedal)
+      	{
+         	$("#medal").css({ scale: 2, opacity: 0 });
+         	$("#medal").transition({ opacity: 1, scale: 1 }, 1200, 'ease');
+		 }
+	 });
+   if(turns > 0)
+   {
+     replayclickable = true;
+     $("#replay").transition({ y: '0px', opacity: 1}, 600, 'ease');
+   } else {
+  	 replayclickable = false;
+   }
 }
 
 $("#replay").click(function() {

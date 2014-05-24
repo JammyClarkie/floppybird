@@ -280,6 +280,22 @@ Screen - Game
    padding-left: 2px;
 }
 
+/* JC Added for turns element */
+#turns
+{
+   position: absolute;
+   top: 105px;
+   left: 35px;
+   width: 104px;
+   height: 14px;
+   text-align: right;
+}
+
+#turns img
+{
+   padding-left: 2px;
+}
+
 #replay
 {
    position: absolute;
